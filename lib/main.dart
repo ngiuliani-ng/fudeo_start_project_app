@@ -18,6 +18,44 @@ class App extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.dehaze),
+          onPressed: () {},
+        ),
+        title: Text("News"),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      body: PageView(
+        children: [
+          LastHourPage(),
+          OldPage(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black45,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star_rounded),
+            label: "Last Hour",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.folder_rounded),
+            label: "Old",
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LastHourPage extends StatelessWidget {
   Widget buildHeadline() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +72,7 @@ class HomePage extends StatelessWidget {
           height: 16,
         ),
         Text(
-          "Casa Bianca, Tarrant come Pelosi e Cortez - Ultima Ora",
+          "Casa Bianca, Tarrant come Pelosi e Cortez",
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -48,6 +86,7 @@ class HomePage extends StatelessWidget {
           maxLines: 6,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
+            fontSize: 14,
             color: Colors.black45,
           ),
         ),
@@ -65,7 +104,7 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Casa Bianca, Tarrant come Pelosi e Cortez - Ultima Ora",
+                "Casa Bianca, Tarrant come Pelosi e Cortez",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -79,6 +118,7 @@ class HomePage extends StatelessWidget {
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
+                  fontSize: 14,
                   color: Colors.black45,
                 ),
               ),
@@ -99,31 +139,72 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.dehaze),
-          onPressed: () {},
-        ),
-        title: Text("News"),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      body: ListView.builder(
-        /// Padding generale.
-        padding: EdgeInsets.all(16),
+    return ListView.builder(
+      /// Padding generale.
+      padding: EdgeInsets.all(16),
 
-        /// 1 → [buildHeadline()]
-        /// 9 → [buildArticle()]
-        itemCount: 1 + 9,
-        itemBuilder: (context, index) {
-          if (index == 0)
-            return buildHeadline();
-          else
-            return Padding(
-              padding: EdgeInsets.only(top: 32),
-              child: buildArticle(),
-            );
+      /// 1 → [buildHeadline()]
+      /// 9 → [buildArticle()]
+      itemCount: 1 + 9,
+      itemBuilder: (context, index) {
+        if (index == 0)
+          return buildHeadline();
+        else
+          return Padding(
+            padding: EdgeInsets.only(top: 32),
+            child: buildArticle(),
+          );
+      },
+    );
+  }
+}
+
+class OldPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      padding: EdgeInsets.all(16),
+      crossAxisCount: 2,
+      childAspectRatio: 0.6,
+      mainAxisSpacing: 16,
+      crossAxisSpacing: 16,
+      children: List.generate(
+        10,
+        (index) {
+          return Column(
+            children: [
+              Container(
+                height: 120,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade500,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Casa Bianca, Tarrant come Pelosi e Cortez",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Text(
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black45,
+                ),
+              ),
+            ],
+          );
         },
       ),
     );
