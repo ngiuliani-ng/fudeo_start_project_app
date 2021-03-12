@@ -18,30 +18,57 @@ class App extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final PageController _pageController = PageController();
+  int _currentPageIndex = 0;
+  bool _currentTheme = true;
+
+  void onPageChanged(int index) {
+    setState(() {
+      _currentPageIndex = index;
+      print("Selected Page: $_currentPageIndex");
+    });
+  }
+
+  void onThemeChanged() {
+    setState(() {
+      _currentTheme = !_currentTheme;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.dehaze),
-          onPressed: () {},
+          icon: _currentTheme ? Icon(Icons.wb_sunny_rounded) : Icon(Icons.nightlight_round),
+          onPressed: onThemeChanged,
         ),
         title: Text("News"),
         centerTitle: true,
         elevation: 0,
       ),
       body: PageView(
+        controller: _pageController,
+        onPageChanged: onPageChanged,
         children: [
           LastHourPage(),
           OldPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
+        currentIndex: _currentPageIndex,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black45,
         elevation: 0,
+        onTap: (int index) {
+          _pageController.animateToPage(index, duration: Duration(milliseconds: 300), curve: Curves.linear);
+        },
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.star_rounded),
@@ -58,41 +85,51 @@ class HomePage extends StatelessWidget {
 }
 
 class LastHourPage extends StatelessWidget {
-  Widget buildHeadline() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          height: 200,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.grey.shade500,
-            borderRadius: BorderRadius.circular(12),
+  Widget buildHeadline(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ArticleDetailPage(),
           ),
-        ),
-        SizedBox(
-          height: 16,
-        ),
-        Text(
-          "Casa Bianca, Tarrant come Pelosi e Cortez",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 200,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade500,
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
-        ),
-        SizedBox(
-          height: 8,
-        ),
-        Text(
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          maxLines: 6,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.black45,
+          SizedBox(
+            height: 16,
           ),
-        ),
-      ],
+          Text(
+            "Casa Bianca, Tarrant come Pelosi e Cortez",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Text(
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+            maxLines: 6,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black45,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -160,7 +197,7 @@ class LastHourPage extends StatelessWidget {
       itemCount: 1 + 9,
       itemBuilder: (context, index) {
         if (index == 0)
-          return buildHeadline();
+          return buildHeadline(context);
         else
           return Padding(
             padding: EdgeInsets.only(top: 32),
@@ -183,39 +220,49 @@ class OldPage extends StatelessWidget {
       children: List.generate(
         10,
         (index) {
-          return Column(
-            children: [
-              Container(
-                height: 120,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade500,
-                  borderRadius: BorderRadius.circular(12),
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ArticleDetailPage(),
                 ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                "Casa Bianca, Tarrant come Pelosi e Cortez",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
+              );
+            },
+            child: Column(
+              children: [
+                Container(
+                  height: 120,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade500,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Text(
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black45,
+                SizedBox(
+                  height: 16,
                 ),
-              ),
-            ],
+                Text(
+                  "Casa Bianca, Tarrant come Pelosi e Cortez",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+                  maxLines: 5,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black45,
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),
