@@ -59,7 +59,7 @@ class ArticleDetailPage extends StatelessWidget {
               height: 8,
             ),
             Text(
-              article.content,
+              article.description,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.black45,

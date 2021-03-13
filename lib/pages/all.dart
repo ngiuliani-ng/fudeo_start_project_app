@@ -43,7 +43,7 @@ class AllPage extends StatelessWidget {
           ),
           Text(
             article.description,
-            maxLines: 5,
+            maxLines: 3,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 14,
@@ -72,7 +72,7 @@ class AllPage extends StatelessWidget {
             return GridView.count(
               padding: EdgeInsets.all(16),
               crossAxisCount: 2,
-              childAspectRatio: 0.6,
+              childAspectRatio: 0.7,
               mainAxisSpacing: 16,
               crossAxisSpacing: 16,
               children: List.generate(

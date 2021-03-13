@@ -44,7 +44,7 @@ class TrendPage extends StatelessWidget {
           ),
           Text(
             article.description,
-            maxLines: 6,
+            maxLines: 3,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 14,
@@ -86,7 +86,7 @@ class TrendPage extends StatelessWidget {
                 ),
                 Text(
                   article.description,
-                  maxLines: 3,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 14,
