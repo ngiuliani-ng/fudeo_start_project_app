@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   void onThemeChanged() {
     setState(() {
       _currentTheme = !_currentTheme;
+      print("Selected Theme: $_currentTheme");
     });
   }
 
@@ -46,7 +47,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: _currentTheme ? Icon(Icons.wb_sunny_rounded) : Icon(Icons.nightlight_round),
+          icon: _currentTheme
+              ? Icon(
+                  Icons.wb_sunny_rounded,
+                  color: Colors.amber.shade600,
+                )
+              : Icon(
+                  Icons.nightlight_round,
+                  color: Colors.yellow.shade600,
+                ),
           onPressed: onThemeChanged,
         ),
         title: Text("News"),
@@ -172,6 +181,9 @@ class LastHourPage extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          SizedBox(
+            width: 16,
           ),
           Container(
             height: 80,
