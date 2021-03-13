@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fudeo_start_project_app/models/article.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ArticleDetailPage extends StatelessWidget {
+  final Article article;
+  ArticleDetailPage({@required this.article});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +21,7 @@ class ArticleDetailPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.link_rounded),
             onPressed: () {
-              launch("https://www.google.com");
+              launch(article.url);
             },
           )
         ],
@@ -31,7 +35,10 @@ class ArticleDetailPage extends StatelessWidget {
               height: 200,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.grey.shade500,
+                image: DecorationImage(
+                  image: NetworkImage(article.urlToImage),
+                  fit: BoxFit.cover,
+                ),
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
@@ -39,7 +46,7 @@ class ArticleDetailPage extends StatelessWidget {
               height: 16,
             ),
             Text(
-              "Casa Bianca, Tarrant come Pelosi e Cortez",
+              article.title,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -49,7 +56,7 @@ class ArticleDetailPage extends StatelessWidget {
               height: 8,
             ),
             Text(
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+              article.content,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.black45,

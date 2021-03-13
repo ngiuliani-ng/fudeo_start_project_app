@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:fudeo_start_project_app/models/article.dart';
+import 'package:fudeo_start_project_app/providers/news_api.dart';
 
 import 'article_detail.dart';
 
 class TrendPage extends StatelessWidget {
-  Widget buildHeadline(BuildContext context) {
+  Widget buildHeadline(BuildContext context, Article article) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ArticleDetailPage(),
+            builder: (context) => ArticleDetailPage(article: article),
           ),
         );
       },
@@ -20,7 +22,10 @@ class TrendPage extends StatelessWidget {
             height: 200,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.grey.shade500,
+              image: DecorationImage(
+                image: NetworkImage(article.urlToImage),
+                fit: BoxFit.cover,
+              ),
               borderRadius: BorderRadius.circular(12),
             ),
           ),
@@ -28,7 +33,7 @@ class TrendPage extends StatelessWidget {
             height: 16,
           ),
           Text(
-            "Casa Bianca, Tarrant come Pelosi e Cortez",
+            article.title,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -38,7 +43,7 @@ class TrendPage extends StatelessWidget {
             height: 8,
           ),
           Text(
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+            article.description,
             maxLines: 6,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -51,13 +56,13 @@ class TrendPage extends StatelessWidget {
     );
   }
 
-  Widget buildArticle(BuildContext context) {
+  Widget buildArticle(BuildContext context, Article article) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ArticleDetailPage(),
+            builder: (context) => ArticleDetailPage(article: article),
           ),
         );
       },
@@ -70,7 +75,7 @@ class TrendPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Casa Bianca, Tarrant come Pelosi e Cortez",
+                  article.title,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -80,7 +85,7 @@ class TrendPage extends StatelessWidget {
                   height: 8,
                 ),
                 Text(
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+                  article.description,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -98,7 +103,10 @@ class TrendPage extends StatelessWidget {
             height: 80,
             width: 80,
             decoration: BoxDecoration(
-              color: Colors.grey.shade500,
+              image: DecorationImage(
+                image: NetworkImage(article.urlToImage),
+                fit: BoxFit.cover,
+              ),
               borderRadius: BorderRadius.circular(12),
             ),
           ),
@@ -109,21 +117,44 @@ class TrendPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      /// Padding generale.
-      padding: EdgeInsets.all(16),
+    return FutureBuilder(
+      future: topHeadlines(),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.active:
+          case ConnectionState.waiting:
+            return Center(
+              child: CircularProgressIndicator(),
+            );
 
-      /// 1 → [buildHeadline()]
-      /// 9 → [buildArticle()]
-      itemCount: 1 + 9,
-      itemBuilder: (context, index) {
-        if (index == 0)
-          return buildHeadline(context);
-        else
-          return Padding(
-            padding: EdgeInsets.only(top: 32),
-            child: buildArticle(context),
-          );
+          case ConnectionState.done:
+            List<Article> articles = snapshot.data;
+            return ListView.builder(
+              /// Padding generale.
+              padding: EdgeInsets.all(16),
+
+              /// Articles: 1 [buildHeadline()].
+              /// Articles: 9 [buildArticle()].
+              itemCount: articles.length,
+              itemBuilder: (context, index) {
+                if (index == 0)
+                  return buildHeadline(context, articles[index]);
+                else
+                  return Padding(
+                    padding: EdgeInsets.only(top: 32),
+                    child: buildArticle(context, articles[index]),
+                  );
+              },
+            );
+
+          default:
+            return Center(
+              child: Icon(
+                Icons.error_outline_rounded,
+                size: 35,
+              ),
+            );
+        }
       },
     );
   }
