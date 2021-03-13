@@ -19,7 +19,10 @@ class ArticleDetailPage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.link_rounded),
+            icon: Icon(
+              Icons.link_rounded,
+              color: Colors.blue.shade600,
+            ),
             onPressed: () {
               launch(article.url);
             },
