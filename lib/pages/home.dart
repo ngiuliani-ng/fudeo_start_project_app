@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'last_hour.dart';
-import 'old.dart';
+import 'trend.dart';
+import 'all.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -51,14 +51,16 @@ class _HomePageState extends State<HomePage> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: [
-          LastHourPage(),
-          OldPage(),
+          TrendPage(),
+          AllPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentPageIndex,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black45,
+        showUnselectedLabels: false,
+        // showSelectedLabels: false,
         elevation: 0,
         onTap: (int index) {
           _pageController.animateToPage(index, duration: Duration(milliseconds: 300), curve: Curves.linear);
@@ -66,11 +68,11 @@ class _HomePageState extends State<HomePage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.star_rounded),
-            label: "Last Hour",
+            label: "Trend",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.folder_rounded),
-            label: "Old",
+            label: "All",
           ),
         ],
       ),

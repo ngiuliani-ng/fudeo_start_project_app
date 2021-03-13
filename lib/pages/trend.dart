@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'article_detail.dart';
 
-class LastHourPage extends StatelessWidget {
+class TrendPage extends StatelessWidget {
   Widget buildHeadline(BuildContext context) {
     return InkWell(
       onTap: () {

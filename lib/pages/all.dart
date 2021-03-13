@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'article_detail.dart';
 
-class OldPage extends StatelessWidget {
+class AllPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
